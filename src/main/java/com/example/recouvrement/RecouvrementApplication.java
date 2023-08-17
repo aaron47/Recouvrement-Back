@@ -54,13 +54,14 @@ public class RecouvrementApplication {
             List<Client> clients = clientRepository.findAll();
             Random random = new Random();
 
-            for (int i = 0; i < 5; i++) { // Generate 5 random factures
+            for (int i = 0; i < 20; i++) { // Generate 5 random factures
                 Client randomClient = clients.get(random.nextInt(clients.size())); // Get a random client
 
                 // Create and save a facture with a random client
                 Facture facture = new Facture();
                 facture.setClient(randomClient);
                 facture.setDescription(faker.lorem().sentence());
+                facture.setMontant(random.nextDouble(1000) + 1);
                 facture.setDateFacture(LocalDate.now());
                 facture.setDateEcheance(LocalDate.now().plusDays(random.nextInt(30) + 1));
                 // Set other attributes of the facture like date, amount, etc.
