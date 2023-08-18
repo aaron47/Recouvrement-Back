@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,18 +21,17 @@ public class AuthenticationService {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
-       var test = this.authenticationManager.authenticate(
+
+        this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
                         authenticationRequest.getPassword()
                 )
         );
-        System.out.println(test);
 
         var client = this.clientRepository.findClientByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new ClientNotFoundException("Client not found with that email"));
         var jwt = this.jwtService.generateTokenWithoutClaims(client);
         logger.debug("Client found: {}", client);
-
 
         return AuthenticationResponse.builder()
                 .id(client.getId())
