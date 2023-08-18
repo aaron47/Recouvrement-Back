@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
 
             return "Mail sent successfully";
         } catch (Exception e) {
-            return "Error while sending mail ..";
+            return "Error while sending mail .." + e.getMessage();
         }
     }
 }

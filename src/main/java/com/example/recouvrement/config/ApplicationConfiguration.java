@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfiguration {
     private final ClientRepository clientRepository;
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfiguration.class);
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> this.clientRepository
@@ -41,6 +42,7 @@ public class ApplicationConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
