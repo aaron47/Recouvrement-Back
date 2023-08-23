@@ -1,5 +1,6 @@
 package com.example.recouvrement.config;
 
+import com.example.recouvrement.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
@@ -21,6 +24,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -40,11 +44,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authenticationHeader.substring(7);
         userEmail = jwtService.extractEmail(jwt);
 
-
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             final UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            var isTokenValid = this.tokenRepository
+                    .findByToken(jwt)
+                    .map(token -> !token.isExpired() && !token.isRevoked())
+                    .orElse(false);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

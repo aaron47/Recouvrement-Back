@@ -1,6 +1,7 @@
 package com.example.recouvrement.models;
 
 
+import com.example.recouvrement.token.Token;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +32,9 @@ public class Client implements UserDetails {
     private String email;
 
     private String password;
+
+//    @OneToMany(mappedBy = "client")
+//    private List<Token> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
