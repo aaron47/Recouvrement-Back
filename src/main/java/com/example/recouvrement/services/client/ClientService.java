@@ -1,6 +1,6 @@
 package com.example.recouvrement.services.client;
 
-import com.example.recouvrement.ClientNotFoundException;
+import com.example.recouvrement.exceptions.ClientNotFoundException;
 import com.example.recouvrement.models.Client;
 import com.example.recouvrement.repositories.ClientRepository;
 import lombok.RequiredArgsConstructor;

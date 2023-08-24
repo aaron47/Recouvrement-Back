@@ -29,9 +29,19 @@ public class Client implements UserDetails {
 
     private String prenom;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
+
+    private String societe;
+
+    private String addresse;
+
+    @Column(unique = true)
+    private String numeroClient;
+
+    private String addresseDeFacturation;
 
 //    @OneToMany(mappedBy = "client")
 //    private List<Token> tokens;

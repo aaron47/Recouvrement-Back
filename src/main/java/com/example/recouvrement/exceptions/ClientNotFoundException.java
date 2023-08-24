@@ -1,4 +1,4 @@
-package com.example.recouvrement;
+package com.example.recouvrement.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

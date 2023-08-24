@@ -1,6 +1,6 @@
 package com.example.recouvrement.auth;
 
-import com.example.recouvrement.ClientNotFoundException;
+import com.example.recouvrement.exceptions.ClientNotFoundException;
 import com.example.recouvrement.config.JwtService;
 import com.example.recouvrement.models.Client;
 import com.example.recouvrement.repositories.ClientRepository;
@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
