@@ -54,12 +54,12 @@ public class RecouvrementApplication {
                 String addresseDeFacturation = faker.address().fullAddress();
 
 
-                clientRepository.save(new Client(null, firstName, lastName, email, phoneNumber, address, societe, numeroClient, addresseDeFacturation));
+                clientRepository.save(new Client(null, firstName, lastName, email, phoneNumber, address, societe, numeroClient, addresseDeFacturation, null, null));
             }
 
 
-            clientRepository.save(new Client(null, "John", "Doe", "johndoe@gmail.com", "123456789", "Sousse", "Billcount Consulting", "123456789", "Hammame Sousse"));
-            clientRepository.save(new Client(null, "Jane", "Doe", "janedoe@gmail.com", "123456789", "Sousse", "Billcount Consulting", "1234567890", "Hammame Sousse"));
+            clientRepository.save(new Client(null, "John", "Doe", "johndoe@gmail.com", "123456789", "Sousse", "Billcount Consulting", "123456789", "Hammame Sousse", null, null));
+            clientRepository.save(new Client(null, "Jane", "Doe", "janedoe@gmail.com", "123456789", "Sousse", "Billcount Consulting", "1234567890", "Hammame Sousse", null, null));
         };
     }
 

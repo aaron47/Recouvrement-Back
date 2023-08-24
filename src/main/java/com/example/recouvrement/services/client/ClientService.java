@@ -1,5 +1,7 @@
 package com.example.recouvrement.services.client;
 
+import com.example.recouvrement.dto.ClientDTO;
+import com.example.recouvrement.dtomapper.ClientDTOMapper;
 import com.example.recouvrement.exceptions.ClientNotFoundException;
 import com.example.recouvrement.models.Client;
 import com.example.recouvrement.repositories.ClientRepository;
@@ -15,12 +17,14 @@ public class ClientService implements IClientService {
     private final ClientRepository clientRepository;
 
     @Override
-    public Client findClientById(Long id) {
-        return this.clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException("Client with id " + id + " not found"));
+    public ClientDTO findClientById(Long id) {
+        Client client = this.clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException("Client with id " + id + " not found"));
+        return ClientDTOMapper.fromClient(client);
     }
 
     @Override
-    public List<Client> findAllClients() {
-        return this.clientRepository.findAll();
+    public List<ClientDTO> findAllClients() {
+        List<Client> clients = this.clientRepository.findAll();
+        return ClientDTOMapper.fromClients(clients);
     }
 }

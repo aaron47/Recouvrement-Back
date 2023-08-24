@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class TypeClient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "type_client_id")
     private Long id;
 
     @OneToOne

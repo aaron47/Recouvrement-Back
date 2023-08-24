@@ -1,5 +1,6 @@
 package com.example.recouvrement.controllers;
 
+import com.example.recouvrement.dto.ClientDTO;
 import com.example.recouvrement.models.Client;
 import com.example.recouvrement.models.helpers.Response;
 import com.example.recouvrement.services.client.IClientService;
@@ -23,7 +24,7 @@ public class ClientController {
 
     @GetMapping("/all")
     public ResponseEntity<Response> findAllClients() {
-        List<Client> clients = clientService.findAllClients();
+        List<ClientDTO> clients = clientService.findAllClients();
 
         return ResponseEntity.ok(Response
                 .builder()

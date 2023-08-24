@@ -1,10 +1,13 @@
 package com.example.recouvrement.models;
 
 
+import com.example.recouvrement.models.helpers.Cycle;
+import com.example.recouvrement.models.helpers.Type;
 import com.example.recouvrement.token.Token;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,8 +46,14 @@ public class Client implements UserDetails {
 
     private String addresseDeFacturation;
 
-//    @OneToMany(mappedBy = "client")
-//    private List<Token> tokens;
+    @Formula("(SELECT tc.type FROM types_clients tc WHERE tc.client_id = client_id)")
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @Formula("(SELECT cf.cycle FROM cycles_facturation cf WHERE cf.client_id = client_id)")
+    @Enumerated(EnumType.STRING)
+    private Cycle cycle;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
