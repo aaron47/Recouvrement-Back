@@ -35,5 +35,29 @@ public class ClientController {
                 .statusCode(OK.value())
                 .build());
     }
+
+    @GetMapping("/statistics/role")
+    public ResponseEntity<Response> getClientStatisticsByRole() {
+        return ResponseEntity.ok(Response
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .data(Map.of("statistics", this.clientService.getClientStatisticsByType()))
+                .message("Role statistics fetched successfully")
+                .status(OK)
+                .statusCode(OK.value())
+                .build());
+    }
+
+    @GetMapping("/statistics/cycle")
+    public ResponseEntity<Response> getClientStatisticsByCycle() {
+        return ResponseEntity.ok(Response
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .data(Map.of("statistics", this.clientService.getClientStatisticsByCycleDeFacturation()))
+                .message("Cycle statistics fetched successfully")
+                .status(OK)
+                .statusCode(OK.value())
+                .build());
+    }
 }
 

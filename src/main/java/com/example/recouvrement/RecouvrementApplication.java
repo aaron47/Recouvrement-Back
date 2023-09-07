@@ -5,6 +5,7 @@ import com.example.recouvrement.models.CycleFacturation;
 import com.example.recouvrement.models.Facture;
 import com.example.recouvrement.models.TypeClient;
 import com.example.recouvrement.models.helpers.Cycle;
+import com.example.recouvrement.models.helpers.FactureStatus;
 import com.example.recouvrement.models.helpers.Type;
 import com.example.recouvrement.repositories.ClientRepository;
 import com.example.recouvrement.repositories.CycleFacturationRepository;
@@ -17,6 +18,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -31,6 +33,7 @@ import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
+@EnableScheduling
 public class RecouvrementApplication {
 
     private static final Faker faker = new Faker();
@@ -43,7 +46,7 @@ public class RecouvrementApplication {
     CommandLineRunner run(ClientRepository clientRepository) {
         return args -> {
             // Generate 10 more clients with random names and emails
-            for (int i = 1; i <= 50; i++) {
+            for (int i = 1; i <= 200; i++) {
                 String firstName = faker.name().firstName();
                 String lastName = faker.name().lastName();
                 String email = faker.internet().emailAddress();
@@ -67,6 +70,7 @@ public class RecouvrementApplication {
     CommandLineRunner run2(FactureRepository factureRepository, ClientRepository clientRepository) {
         return args -> {
             List<Client> clients = clientRepository.findAll();
+            List<FactureStatus> factureStatuses = Arrays.asList(FactureStatus.values());
             Random random = new Random();
 
             for (int i = 0; i < clients.size(); ++i) { // Generate 5 random factures
@@ -78,9 +82,21 @@ public class RecouvrementApplication {
                 facture.setMontant(random.nextDouble(1000) + 1);
                 facture.setDateFacture(LocalDate.now());
                 facture.setDateEcheance(LocalDate.now().plusDays(random.nextInt(30) + 1));
+                facture.setFactureStatus(factureStatuses.get(random.nextInt(factureStatuses.size())));
                 // Set other attributes of the facture like date, amount, etc.
                 factureRepository.save(facture);
             }
+
+            Client randomClient = clients.get(random.nextInt(clients.size()));
+            Facture facture = new Facture();
+            facture.setClient(randomClient);
+            facture.setDescription(faker.lorem().sentence());
+            facture.setMontant(random.nextDouble(1000) + 1);
+            facture.setDateFacture(LocalDate.now());
+            facture.setDateEcheance(LocalDate.now().minusDays(4 + 1));
+            facture.setFactureStatus(FactureStatus.IMPAYEE);
+            // Set other attributes of the facture like date, amount, etc.
+            factureRepository.save(facture);
         };
     }
 
