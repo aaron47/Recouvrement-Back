@@ -1,0 +1,46 @@
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+  mail:
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
+    username: ${EMAIL_ID}
+#    password: ktsyqilgtvxncuxv
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  error:
+    include-message: always
+  port: ${CONTAINER_PORT:8080}
+logging:
+  level:
+    com.example.recouvrement.config: DEBUG
+com:
+  jwt:
+#    secret: 59337C795F2EE06CB3547DA63ECC77E7E0C5DF9715C94F72C3D844EECD19F169
+    secret: ${JWT_SECRET}
+    expiration: 604800000
+
+ui:
+  app:
+    url: ${UI_APP_URL}
+
+application:
+  title: Recouvrement
+  version: 1.0

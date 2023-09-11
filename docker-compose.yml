@@ -1,0 +1,16 @@
+services:
+  recouvrement-spring:
+    container_name: recouvrement-spring-container
+    build:
+      context: .
+      args:
+        CONTAINER_PORT: ${CONTAINER_PORT}
+    image: recouvrement-spring:v1
+    restart: unless-stopped
+    env_file:
+      - ${ENV_FILE}
+    expose:
+      - ${CONTAINER_PORT}
+    ports:
+      - ${CONTAINER_PORT}:${HOST_PORT}
+
