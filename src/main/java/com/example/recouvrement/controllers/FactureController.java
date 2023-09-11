@@ -63,4 +63,16 @@ public class FactureController {
                 .statusCode(OK.value())
                 .build());
     }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<Response> getFactureStatistics() {
+        return ResponseEntity.ok(Response
+                .builder()
+                .timestamp(LocalDateTime.now())
+                .data(Map.of("statistics", this.factureService.getFactureStatistics()))
+                .message("Facture statistics fetched successfully")
+                .status(OK)
+                .statusCode(OK.value())
+                .build());
+    }
 }
