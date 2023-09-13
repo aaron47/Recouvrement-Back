@@ -25,6 +25,7 @@ public class WebConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedOrigin("http://172.29.144.1");
+        config.addAllowedOrigin("http://172.168.99.214");
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,

@@ -19,6 +19,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -43,26 +44,26 @@ public class RecouvrementApplication {
     }
 
     @Bean
-    CommandLineRunner run(ClientRepository clientRepository) {
+    CommandLineRunner run(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             // Generate 10 more clients with random names and emails
             for (int i = 1; i <= 200; i++) {
                 String firstName = faker.name().firstName();
                 String lastName = faker.name().lastName();
                 String email = faker.internet().emailAddress();
-                String phoneNumber = RandomStringUtils.randomNumeric(9); // Generate random 9-digit phone number
+                String password = RandomStringUtils.randomNumeric(9); // Generate random 9-digit phone number
                 String address = faker.address().fullAddress();
                 String societe = faker.company().name();
                 String numeroClient = RandomStringUtils.randomNumeric(9);
                 String addresseDeFacturation = faker.address().fullAddress();
 
 
-                clientRepository.save(new Client(null, firstName, lastName, email, phoneNumber, address, societe, numeroClient, addresseDeFacturation, null, null));
+                clientRepository.save(new Client(null, firstName, lastName, email, passwordEncoder.encode(password), address, societe, numeroClient, addresseDeFacturation, null, null));
             }
 
 
-            clientRepository.save(new Client(null, "John", "Doe", "johndoe@gmail.com", "123456789", "Sousse", "Billcount Consulting", "123456789", "Hammame Sousse", null, null));
-            clientRepository.save(new Client(null, "Jane", "Doe", "janedoe@gmail.com", "123456789", "Sousse", "Billcount Consulting", "1234567890", "Hammame Sousse", null, null));
+            clientRepository.save(new Client(null, "John", "Doe", "johndoe@gmail.com", passwordEncoder.encode("123456789"), "Sousse", "Billcount Consulting", "123456789", "Hammame Sousse", null, null));
+            clientRepository.save(new Client(null, "Jane", "Doe", "janedoe@gmail.com", passwordEncoder.encode("123456789"), "Sousse", "Billcount Consulting", "1234567890", "Hammame Sousse", null, null));
         };
     }
 

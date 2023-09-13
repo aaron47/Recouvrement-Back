@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
@@ -31,6 +33,16 @@ public class AuthenticationService {
         var client = this.clientRepository
                 .findClientByEmail(authenticationRequest.getEmail())
                 .orElseThrow(() -> new ClientNotFoundException("Client not found with that email"));
+        if (!this.isUserAuthenticated(client, authenticationRequest.getPassword())) {
+            return AuthenticationResponse
+                    .builder()
+                    .id(client.getId())
+                    .nom(client.getNom())
+                    .prenom(client.getPrenom())
+                    .email(client.getEmail())
+                    .token(null)
+                    .build();
+        }
 
         var jwt = this.jwtService.generateTokenWithoutClaims(client);
         this.revokeAllPreviousValidTokens(client);
@@ -72,5 +84,9 @@ public class AuthenticationService {
         });
 
         tokenRepository.saveAll(validTokens);
+    }
+
+    private boolean isUserAuthenticated(Client client, String password) {
+        return passwordEncoder.matches(password, client.getPassword());
     }
 }
